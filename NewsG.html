@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEWS APP</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Nunito:ital,wght@0,300;0,400;1,300;1,400&family=Plus+Jakarta+Sans:wght@400;600&family=Poppins:wght@200;300;400;500&family=Ubuntu:wght@500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0%;
+            padding: 0%;
+            font-family: Ubuntu;
+        }
+
+        .header {
+            width: 100%;
+            background-color: skyblue;
+            height: 100px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .inputClass {
+            padding: 10px;
+            outline: none;
+            border: none;
+            font-size: 20px;
+            color: white;
+            background-color: transparent;
+            border-bottom: 2px solid red;
+            height: 20px;
+        }
+
+        .inputClass::placeholder {
+            color: white;
+        }
+
+        button {
+            background-color: green;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 20px;
+            margin-left: 30px;
+            border: none;
+            font-weight: bold;
+            transition: .5s;
+            cursor: pointer;
+        }
+
+        button:hover {
+            color: green;
+            background-color: white;
+        }
+
+        .header>h1 {
+            color: blue;
+        }
+
+        span {
+            color: red;
+        }
+
+        .container {
+            width: 100%;
+            height: 87vh;
+            background-color: rgba(229, 238, 238, 0.882);
+            overflow: scroll;
+            /* scroll-margin-right: 10px;  */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .newsarea {
+            width: 40%;
+            margin: 10px;
+            border: 2px solid red;
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .newsarea img {
+            width: 80%;
+            height: 200px;
+            margin-left: 30px;
+            margin: 20px 0px;
+            border-radius: 20px;
+        }
+
+        .author {
+            color: red;
+            margin: 10px 0px;
+        }
+
+        a {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="header">
+            <h1>Local .<span>News</span></h1>
+            <div class="input">
+                <input type="text" class="inputClass" placeholder="Enter Topics">
+                <button class="buttonClass">SEARCH</button>
+            </div>
+        </div>
+        <div class="container"></div>
+    </div>
+</body>
+<script>
+    //querySelectors
+    //    var q=""
+    var inputClass = document.querySelector('.inputClass');
+    var buttonClass = document.querySelector('.buttonClass');
+    var container = document.querySelector('.container');
+    // inputClass.addEventListener("change", () => {
+
+
+    // })
+    buttonClass.addEventListener('click', function (event) {
+        container.innerHTML = ""
+        fetch(`https://newsapi.org/v2/top-headlines?sources=${inputClass.value}&apiKey=846fd227de084ee2ae29d9474c3e1a43`)
+            .then(result => result.json())
+            .then(data => {
+                let articles = data["articles"]
+                console.log(data);
+                for (let i = 0; i < 10; i++) {
+                    let article = articles[i]
+                    let html = `<div class="newsarea">
+                    <h1>${article["title"]} </h1>
+                    <img src=${article["urlToImage"]}>
+                    <p class="author">Govind verma</p>
+                    <p>${article["description"]} <a href=${article["url"]}>Read more</a> </p>
+                  </div>`
+
+                    container.innerHTML += html
+
+
+                }
+            }).catch(err => alert("error"))
+    })
+
+
+
+</script>
+
+</html>
